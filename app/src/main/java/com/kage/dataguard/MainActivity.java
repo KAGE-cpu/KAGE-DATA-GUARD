@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Build;
 import android.os.Process;
 import android.provider.Settings;
 import android.view.View;
@@ -52,7 +53,7 @@ public class MainActivity extends Activity {
         root.addView(button("GRANT USAGE ACCESS", v -> startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))));
         root.addView(button("START MONITORING", v -> {
             if (!hasUsageAccess()) startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-            else startService(new Intent(this, MonitorService.class));
+            else { Intent service = new Intent(this, MonitorService.class); if (Build.VERSION.SDK_INT >= 26) startForegroundService(service); else startService(service); }
             refresh();
         }));
         root.addView(button("STOP MONITORING", v -> stopService(new Intent(this, MonitorService.class))));
