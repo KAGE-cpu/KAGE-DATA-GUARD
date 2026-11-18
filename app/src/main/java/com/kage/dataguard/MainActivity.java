@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-        budgetMb = getPreferences(0).getLong("budget", 500);
+        budgetMb = getSharedPreferences("limits", MODE_PRIVATE).getLong("budget", 500);
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(32, 36, 32, 24);
@@ -78,7 +78,7 @@ public class MainActivity extends Activity {
         try {
             long value = Long.parseLong(budgetInput.getText().toString().trim());
             if (value < 1 || value > 100000) throw new NumberFormatException();
-            budgetMb = value; getPreferences(0).edit().putLong("budget", value).apply();
+            budgetMb = value; getSharedPreferences("limits", MODE_PRIVATE).edit().putLong("budget", value).apply();
             Toast.makeText(this, "Daily budget saved", Toast.LENGTH_SHORT).show();
         } catch (Exception e) { Toast.makeText(this, "Enter a budget from 1 to 100000 MB", Toast.LENGTH_LONG).show(); }
     }
